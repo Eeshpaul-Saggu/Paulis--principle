@@ -33,7 +33,7 @@ length(unique(hp$PID))==nrow(hp)
 #Houses in the same vicinty and the same hpuse style tend to have same Linear feet of street connected to property
 length(which(is.na(hp$`Lot Frontage`)))/nrow(hp)
 length(boxplot(hp$`Lot Frontage`)$out)/nrow(hp)
-table(hp$`Lot Frontage`)
+table(hp$`Lot Frontage`) 
 test <- aggregate(`Lot Frontage` ~ Neighborhood+`House Style`, data=hp ,median)
 hp %>% left_join(test, by = c("Neighborhood","House Style")) -> hp
 hp$`Lot Frontage.x`<-NULL
