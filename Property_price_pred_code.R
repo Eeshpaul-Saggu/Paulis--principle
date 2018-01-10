@@ -56,7 +56,7 @@ hp$Street<-NULL
 #so removing the variable
 hp$Alley<-NULL
 
-#Utilities
+#Utilities 
 #99.9% of the data has All pub as an utility
 #removing utilities
 table(hp$Utilities)
