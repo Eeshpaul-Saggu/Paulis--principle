@@ -1,0 +1,1005 @@
+install.packages("randomForest")
+library(randomForest)
+read.csv('pred_data_.csv')
+
+#Checking the class of the training data variables
+colnames(Train_data_vf3)
+class(Train_data_vf4$Week_Day_no)
+class(Train_data_vf4$Day_of_Month)
+class(Train_data_vf4$Dept_name)
+class(Train_data_vf4$Code)
+class(Train_data_vf4$vp)
+class(Train_data_vf4$Feature_length)
+class(Train_data_vf4$ProductType)
+class(Train_data_vf4$BinBulk)
+class(Train_data_vf4$ChannelStrategy)
+class(Train_data_vf4$SKUPurchaseType)
+class(Train_data_vf4$InStoreDiscountPercent)
+class(Train_data_vf4$InStoreSalesQuantity)
+class(Train_data_vf4$OnlineDiscountPercent)
+class(Train_data_vf4$OnlineSalesQuantity)
+#Converting the variables to factors
+Train_data_vf4$Dept_name <- as.factor(Train_data_vf4$Dept_name)
+Train_data_vf4$Code <- as.factor(Train_data_vf4$Code)
+Train_data_vf4$vp <- as.factor(Train_data_vf4$vp)
+Train_data_vf4$ProductType <- as.factor(Train_data_vf4$ProductType)
+Train_data_vf4$BinBulk <- as.factor(Train_data_vf4$BinBulk)
+Train_data_vf4$ChannelStrategy <- as.factor(Train_data_vf4$ChannelStrategy)
+Train_data_vf4$SKUPurchaseType <- as.factor(Train_data_vf4$SKUPurchaseType)
+
+#Subsetting data for multuple forests
+train1<- Train_data_vf4[Train_data_vf4$Dept_name == '101-DILEEP COLLECTION',]
+train2<- Train_data_vf4[Train_data_vf4$Dept_name == '110-SEASOUnknownL/IMPULSE/PAPER GOODS',]
+train3<- Train_data_vf4[Train_data_vf4$Dept_name == '150-CHRISTMAS ORUnknownMENTS & TRIM',]
+train4<- Train_data_vf4[Train_data_vf4$Dept_name == '155-FESTIVE DECOR',]
+train5<- Train_data_vf4[Train_data_vf4$Dept_name == '180-HOME FRAGRANCES',]
+train6<- Train_data_vf4[Train_data_vf4$Dept_name == '200-OUTDOOR CUSHIONS',]
+train7<- Train_data_vf4[Train_data_vf4$Dept_name == '210-INDOOR CUSHIONS',]
+train8<- Train_data_vf4[Train_data_vf4$Dept_name == '220-CANDLE HOLDERS',]
+train9<- Train_data_vf4[Train_data_vf4$Dept_name == '230-GLIMMER AND LED',]
+train10<- Train_data_vf4[Train_data_vf4$Dept_name == '240-BEDDING',]
+train11<- Train_data_vf4[Train_data_vf4$Dept_name == '250-THROWS',]
+train12<- Train_data_vf4[Train_data_vf4$Dept_name == '270-LIGHTING',]
+train13<- Train_data_vf4[Train_data_vf4$Dept_name == '280-PILLOWS',]
+train14<- Train_data_vf4[Train_data_vf4$Dept_name == '285-OUTDOOR PILLOWS',]
+train15<- Train_data_vf4[Train_data_vf4$Dept_name == '330-MIRRORS',]
+train16<- Train_data_vf4[Train_data_vf4$Dept_name == '340-DECORATIVE ACCESSORIES',]
+train17<- Train_data_vf4[Train_data_vf4$Dept_name == '350-DECORATIVE VASES',]
+train18<- Train_data_vf4[Train_data_vf4$Dept_name == '360-WALL DECOR',]
+train19<- Train_data_vf4[Train_data_vf4$Dept_name == '370-FRAMES',]
+train20<- Train_data_vf4[Train_data_vf4$Dept_name == '410-KITCHEN & DINING ESSENTIALS',]
+train21<- Train_data_vf4[Train_data_vf4$Dept_name == '420-DINNERWARE',]
+train22<- Train_data_vf4[Train_data_vf4$Dept_name == '430-SERVEWARE',]
+train23<- Train_data_vf4[Train_data_vf4$Dept_name == '450-DRINKWARE/BARWARE',]
+train24<- Train_data_vf4[Train_data_vf4$Dept_name == '520-TABLE LINENS/KITCHEN TEXTILE',]
+train25<- Train_data_vf4[Train_data_vf4$Dept_name == '530-BATH TEXTILES',]
+train26<- Train_data_vf4[Train_data_vf4$Dept_name == '670-FLORAL DECOR',]
+train27<- Train_data_vf4[Train_data_vf4$Dept_name == '700-BASKETS',]
+train28<- Train_data_vf4[Train_data_vf4$Dept_name == '800-FLOOR COVERINGS',]
+train29<- Train_data_vf4[Train_data_vf4$Dept_name == '805-OUTDOOR FLOOR COVERINGS',]
+train30<- Train_data_vf4[Train_data_vf4$Dept_name == '810-DINING COLLECTIONS',]
+train31<- Train_data_vf4[Train_data_vf4$Dept_name == '815-UPHOLSTERED DINING SEATING',]
+train32<- Train_data_vf4[Train_data_vf4$Dept_name == '820-OCCASIOUnknownL',]
+train33<- Train_data_vf4[Train_data_vf4$Dept_name == '830-BEDROOM FURNITURE',]
+train34<- Train_data_vf4[Train_data_vf4$Dept_name == '840-OUTDOOR FURNITURE',]
+train35<- Train_data_vf4[Train_data_vf4$Dept_name == '850-ORGANIZATION & HOME OFFICE',]
+train36<- Train_data_vf4[Train_data_vf4$Dept_name == '860-OUTDOOR ACCSSORIES',]
+train37<- Train_data_vf4[Train_data_vf4$Dept_name == '870-BATH FURNITURE',]
+train38<- Train_data_vf4[Train_data_vf4$Dept_name == '880-CURTAINS',]
+train39<- Train_data_vf4[Train_data_vf4$Dept_name == '890-UPHOLSTERED SEATING',]
+train40<- Train_data_vf4[Train_data_vf4$Dept_name == '895-UnknownTURAL SEATING',]
+
+#Running the random forest regression on the 40 subsets for instore sales
+rf_1 <- randomForest(InStoreSalesQuantity ~ Week_Day_no +Day_of_Month+
+                       Dept_name+Code+vp+Feature_length+ProductType+
+                       BinBulk+ChannelStrategy+SKUPurchaseType, data=train1,
+                     ntree = 100,
+                     mtry = 4,
+                     importance = TRUE,
+                     proximity = TRUE)
+
+rf_2 <- randomForest(InStoreSalesQuantity ~ Week_Day_no +Day_of_Month+
+                       Dept_name+Code+vp+Feature_length+ProductType+
+                       BinBulk+ChannelStrategy+SKUPurchaseType, data=train2,
+                     ntree = 100,
+                     mtry = 4,
+                     importance = TRUE,
+                     proximity = TRUE)
+
+
+rf_3 <- randomForest(InStoreSalesQuantity ~ Week_Day_no +Day_of_Month+
+                       Dept_name+Code+vp+Feature_length+ProductType+
+                       BinBulk+ChannelStrategy+SKUPurchaseType, data=train3,
+                     ntree = 100,
+                     mtry = 4,
+                     importance = TRUE,
+                     proximity = TRUE)
+
+rf_5 <- randomForest(InStoreSalesQuantity ~ Week_Day_no +Day_of_Month+
+                       Dept_name+Code+vp+Feature_length+ProductType+
+                       BinBulk+ChannelStrategy+SKUPurchaseType, data=train5,
+                     ntree = 100,
+                     mtry = 4,
+                     importance = TRUE,
+                     proximity = TRUE)
+
+rf_6 <- randomForest(InStoreSalesQuantity ~ Week_Day_no +Day_of_Month+
+                       Dept_name+Code+vp+Feature_length+ProductType+
+                       BinBulk+ChannelStrategy+SKUPurchaseType, data=train6,
+                     ntree = 100,
+                     mtry = 4,
+                     importance = TRUE,
+                     proximity = TRUE)
+
+rf_7 <- randomForest(InStoreSalesQuantity ~ Week_Day_no +Day_of_Month+
+                       Dept_name+Code+vp+Feature_length+ProductType+
+                       BinBulk+ChannelStrategy+SKUPurchaseType, data=train7,
+                     ntree = 100,
+                     mtry = 4,
+                     importance = TRUE,
+                     proximity = TRUE)
+
+rf_8 <- randomForest(InStoreSalesQuantity ~ Week_Day_no +Day_of_Month+
+                       Dept_name+Code+vp+Feature_length+ProductType+
+                       BinBulk+ChannelStrategy+SKUPurchaseType, data=train8,
+                     ntree = 100,
+                     mtry = 4,
+                     importance = TRUE,
+                     proximity = TRUE)
+
+rf_9 <- randomForest(InStoreSalesQuantity ~ Week_Day_no +Day_of_Month+
+                       Dept_name+Code+vp+Feature_length+ProductType+
+                       BinBulk+ChannelStrategy+SKUPurchaseType, data=train9,
+                     ntree = 100,
+                     mtry = 4,
+                     importance = TRUE,
+                     proximity = TRUE)
+
+rf_10 <- randomForest(InStoreSalesQuantity ~ Week_Day_no +Day_of_Month+
+                        Dept_name+Code+vp+Feature_length+ProductType+
+                        BinBulk+ChannelStrategy+SKUPurchaseType, data=train10,
+                      ntree = 100,
+                      mtry = 4,
+                      importance = TRUE,
+                      proximity = TRUE)
+
+train11.imputed <- rfImpute(InStoreSalesQuantity ~ Week_Day_no +Day_of_Month+
+                              Dept_name+Code+vp+Feature_length+ProductType+
+                              BinBulk+ChannelStrategy+SKUPurchaseType,train11)
+
+rf_11 <- randomForest(InStoreSalesQuantity ~., data=train11.imputed,
+                      ntree = 100,
+                      mtry = 4,
+                      importance = TRUE,
+                      proximity = TRUE
+)
+
+?rfImpute
+rf_12 <- randomForest(InStoreSalesQuantity ~ Week_Day_no +Day_of_Month+
+                        Dept_name+Code+vp+Feature_length+ProductType+
+                        BinBulk+ChannelStrategy+SKUPurchaseType, data=train12,
+                      ntree = 100,
+                      mtry = 4,
+                      importance = TRUE,
+                      proximity = TRUE)
+
+train13 <- train13[sample(nrow(train13)),]
+
+train13<-train13[1:9500,]
+train13.imputed <- rfImpute(InStoreSalesQuantity ~ Week_Day_no +Day_of_Month+
+                              Dept_name+Code+vp+Feature_length+ProductType+
+                              BinBulk+ChannelStrategy+SKUPurchaseType,train13)
+
+rf_13 <- randomForest(InStoreSalesQuantity ~., data=train13.imputed,
+                      ntree = 100,
+                      mtry = 4,
+                      importance = TRUE,
+                      proximity = TRUE)
+
+
+
+rf_14 <- randomForest(InStoreSalesQuantity ~ Week_Day_no +Day_of_Month+
+                        Dept_name+Code+vp+Feature_length+ProductType+
+                        BinBulk+ChannelStrategy+SKUPurchaseType, data=train14,
+                      ntree = 100,
+                      mtry = 4,
+                      importance = TRUE,
+                      proximity = TRUE)
+
+rf_15 <- randomForest(InStoreSalesQuantity ~ Week_Day_no +Day_of_Month+
+                        Dept_name+Code+vp+Feature_length+ProductType+
+                        BinBulk+ChannelStrategy+SKUPurchaseType, data=train15,
+                      ntree = 100,
+                      mtry = 4,
+                      importance = TRUE,
+                      proximity = TRUE)
+
+train16.imputed <- rfImpute(InStoreSalesQuantity ~ Week_Day_no +Day_of_Month+
+                              Dept_name+Code+vp+Feature_length+ProductType+
+                              BinBulk+ChannelStrategy+SKUPurchaseType,train16)
+
+rf_16 <- randomForest(InStoreSalesQuantity ~., data=train16.imputed,
+                      ntree = 100,
+                      mtry = 4,
+                      importance = TRUE,
+                      proximity = TRUE)
+
+train17.imputed <- rfImpute(InStoreSalesQuantity ~ Week_Day_no +Day_of_Month+
+                              Dept_name+Code+vp+Feature_length+ProductType+
+                              BinBulk+ChannelStrategy+SKUPurchaseType,train17)
+
+rf_17 <- randomForest(InStoreSalesQuantity ~., data=train17.imputed,
+                      ntree = 100,
+                      mtry = 4,
+                      importance = TRUE,
+                      proximity = TRUE)
+
+train18.imputed <- rfImpute(InStoreSalesQuantity ~ Week_Day_no +Day_of_Month+
+                              Dept_name+Code+vp+Feature_length+ProductType+
+                              BinBulk+ChannelStrategy+SKUPurchaseType,train18)
+
+rf_18 <- randomForest(InStoreSalesQuantity ~., data=train18.imputed,
+                      ntree = 100,
+                      mtry = 4,
+                      importance = TRUE,
+                      proximity = TRUE)
+
+rf_19 <- randomForest(InStoreSalesQuantity ~ Week_Day_no +Day_of_Month+
+                        Dept_name+Code+vp+Feature_length+ProductType+
+                        BinBulk+ChannelStrategy+SKUPurchaseType, data=train19,
+                      ntree = 100,
+                      mtry = 4,
+                      importance = TRUE,
+                      proximity = TRUE)
+
+train20.imputed <- rfImpute(InStoreSalesQuantity ~ Week_Day_no +Day_of_Month+
+                              Dept_name+Code+vp+Feature_length+ProductType+
+                              BinBulk+ChannelStrategy+SKUPurchaseType,train20)
+
+rf_20 <- randomForest(InStoreSalesQuantity ~., data=train20.imputed,
+                      ntree = 100,
+                      mtry = 4,
+                      importance = TRUE,
+                      proximity = TRUE)
+
+rf_21 <- randomForest(InStoreSalesQuantity ~ Week_Day_no +Day_of_Month+
+                        Dept_name+Code+vp+Feature_length+ProductType+
+                        BinBulk+ChannelStrategy+SKUPurchaseType, data=train21,
+                      ntree = 100,
+                      mtry = 4,
+                      importance = TRUE,
+                      proximity = TRUE)
+
+rf_22 <- randomForest(InStoreSalesQuantity ~ Week_Day_no +Day_of_Month+
+                        Dept_name+Code+vp+Feature_length+ProductType+
+                        BinBulk+ChannelStrategy+SKUPurchaseType, data=train22,
+                      ntree = 100,
+                      mtry = 4,
+                      importance = TRUE,
+                      proximity = TRUE)
+
+rf_23 <- randomForest(InStoreSalesQuantity ~ Week_Day_no +Day_of_Month+
+                        Dept_name+Code+vp+Feature_length+ProductType+
+                        BinBulk+ChannelStrategy+SKUPurchaseType, data=train23,
+                      ntree = 100,
+                      mtry = 4,
+                      importance = TRUE,
+                      proximity = TRUE)
+
+rf_24 <- randomForest(InStoreSalesQuantity ~ Week_Day_no +Day_of_Month+
+                        Dept_name+Code+vp+Feature_length+ProductType+
+                        BinBulk+ChannelStrategy+SKUPurchaseType, data=train24,
+                      ntree = 100,
+                      mtry = 4,
+                      importance = TRUE,
+                      proximity = TRUE)
+
+rf_25 <- randomForest(InStoreSalesQuantity ~ Week_Day_no +Day_of_Month+
+                        Dept_name+Code+vp+Feature_length+ProductType+
+                        BinBulk+ChannelStrategy+SKUPurchaseType, data=train25,
+                      ntree = 100,
+                      mtry = 4,
+                      importance = TRUE,
+                      proximity = TRUE)
+
+rf_26 <- randomForest(InStoreSalesQuantity ~ Week_Day_no +Day_of_Month+
+                        Dept_name+Code+vp+Feature_length+ProductType+
+                        BinBulk+ChannelStrategy+SKUPurchaseType, data=train26,
+                      ntree = 100,
+                      mtry = 4,
+                      importance = TRUE,
+                      proximity = TRUE)
+
+train27.imputed <- rfImpute(InStoreSalesQuantity ~ Week_Day_no +Day_of_Month+
+                              Dept_name+Code+vp+Feature_length+ProductType+
+                              BinBulk+ChannelStrategy+SKUPurchaseType,train27)
+
+rf_27 <- randomForest(InStoreSalesQuantity ~., data=train27.imputed,
+                      ntree = 100,
+                      mtry = 4,
+                      importance = TRUE,
+                      proximity = TRUE)
+
+rf_28 <- randomForest(InStoreSalesQuantity ~ Week_Day_no +Day_of_Month+
+                        Dept_name+Code+vp+Feature_length+ProductType+
+                        BinBulk+ChannelStrategy+SKUPurchaseType, data=train28,
+                      ntree = 100,
+                      mtry = 4,
+                      importance = TRUE,
+                      proximity = TRUE)
+
+rf_29 <- randomForest(InStoreSalesQuantity ~ Week_Day_no +Day_of_Month+
+                        Dept_name+Code+vp+Feature_length+ProductType+
+                        BinBulk+ChannelStrategy+SKUPurchaseType, data=train29,
+                      ntree = 100,
+                      mtry = 4,
+                      importance = TRUE,
+                      proximity = TRUE)
+
+train30.imputed <- rfImpute(InStoreSalesQuantity ~ Week_Day_no +Day_of_Month+
+                              Dept_name+Code+vp+Feature_length+ProductType+
+                              BinBulk+ChannelStrategy+SKUPurchaseType,train30)
+
+rf_30 <- randomForest(InStoreSalesQuantity ~., data=train30.imputed,
+                      ntree = 100,
+                      mtry = 4,
+                      importance = TRUE,
+                      proximity = TRUE)
+
+rf_31 <- randomForest(InStoreSalesQuantity ~ Week_Day_no +Day_of_Month+
+                        Dept_name+Code+vp+Feature_length+ProductType+
+                        BinBulk+ChannelStrategy+SKUPurchaseType, data=train31,
+                      ntree = 100,
+                      mtry = 4,
+                      importance = TRUE,
+                      proximity = TRUE)
+
+rf_32 <- randomForest(InStoreSalesQuantity ~ Week_Day_no +Day_of_Month+
+                        Dept_name+Code+vp+Feature_length+ProductType+
+                        BinBulk+ChannelStrategy+SKUPurchaseType, data=train32,
+                      ntree = 100,
+                      mtry = 4,
+                      importance = TRUE,
+                      proximity = TRUE)
+
+train33 <- train33[sample(nrow(train33)),]
+
+train33<-train33[1:2500,]
+
+train33.imputed <- rfImpute(InStoreSalesQuantity ~ Week_Day_no +Day_of_Month+
+                              Dept_name+Code+vp+Feature_length+ProductType+
+                              BinBulk+ChannelStrategy+SKUPurchaseType,train33)
+
+rf_33 <- randomForest(InStoreSalesQuantity ~., data=train33.imputed,
+                      ntree = 100,
+                      mtry = 4,
+                      importance = TRUE,
+                      proximity = TRUE)
+
+train34<-train34[1:10000,]
+
+rf_34 <- randomForest(InStoreSalesQuantity ~ Week_Day_no +Day_of_Month+
+                        Dept_name+Code+vp+Feature_length+ProductType+
+                        BinBulk+ChannelStrategy+SKUPurchaseType, data=train34,
+                      ntree = 100,
+                      mtry = 4,
+                      importance = TRUE,
+                      proximity = TRUE)
+
+train35.imputed <- rfImpute(InStoreSalesQuantity ~ Week_Day_no +Day_of_Month+
+                              Dept_name+Code+vp+Feature_length+ProductType+
+                              BinBulk+ChannelStrategy+SKUPurchaseType,train35)
+
+rf_35 <- randomForest(InStoreSalesQuantity ~., data=train35.imputed,
+                      ntree = 100,
+                      mtry = 4,
+                      importance = TRUE,
+                      proximity = TRUE)
+
+rf_36 <- randomForest(InStoreSalesQuantity ~ Week_Day_no +Day_of_Month+
+                        Dept_name+Code+vp+Feature_length+ProductType+
+                        BinBulk+ChannelStrategy+SKUPurchaseType, data=train36,
+                      ntree = 100,
+                      mtry = 4,
+                      importance = TRUE,
+                      proximity = TRUE)
+
+train37.imputed <- rfImpute(InStoreSalesQuantity ~ Week_Day_no +Day_of_Month+
+                              Dept_name+Code+vp+Feature_length+ProductType+
+                              BinBulk+ChannelStrategy+SKUPurchaseType,train37)
+
+rf_37 <- randomForest(InStoreSalesQuantity ~., data=train37.imputed,
+                      ntree = 100,
+                      mtry = 4,
+                      importance = TRUE,
+                      proximity = TRUE)
+
+rf_38 <- randomForest(InStoreSalesQuantity ~ Week_Day_no +Day_of_Month+
+                        Dept_name+Code+vp+Feature_length+ProductType+
+                        BinBulk+ChannelStrategy+SKUPurchaseType, data=train38,
+                      ntree = 100,
+                      mtry = 4,
+                      importance = TRUE,
+                      proximity = TRUE)
+
+
+train39 <- train39[sample(nrow(train39)),]
+
+train39<-train39[1:6000,]
+
+
+train39.imputed <- rfImpute(InStoreSalesQuantity ~ Week_Day_no +Day_of_Month+
+                              Dept_name+Code+vp+Feature_length+ProductType+
+                              BinBulk+ChannelStrategy+SKUPurchaseType,train39)
+
+
+rf_39 <- randomForest(InStoreSalesQuantity ~., data=train39.imputed,
+                      ntree = 100,
+                      mtry = 4,
+                      importance = TRUE,
+                      proximity = TRUE)
+
+rf_40 <- randomForest(InStoreSalesQuantity ~ Week_Day_no +Day_of_Month+
+                        Dept_name+Code+vp+Feature_length+ProductType+
+                        BinBulk+ChannelStrategy+SKUPurchaseType, data=train40,
+                      ntree = 100,
+                      mtry = 4,
+                      importance = TRUE,
+                      proximity = TRUE)
+
+#Converting test data variables into factors
+Test_data_vf4$Dept_name <- as.factor(Test_data_vf4$Dept_name)
+Test_data_vf4$Code <- as.factor(Test_data_vf4$Code)
+Test_data_vf4$vp <- as.factor(Test_data_vf4$vp)
+Test_data_vf4$ProductType <- as.factor(Test_data_vf4$ProductType)
+Test_data_vf4$BinBulk <- as.factor(Test_data_vf4$BinBulk)
+Test_data_vf4$ChannelStrategy <- as.factor(Test_data_vf4$ChannelStrategy)
+Test_data_vf4$SKUPurchaseType <- as.factor(Test_data_vf4$SKUPurchaseType)
+
+#Dividing the test data at the same level for predictions 
+test1<- Test_data_vf4[Test_data_vf4$Dept_name == '101-DILEEP COLLECTION',]
+test2<- Test_data_vf4[Test_data_vf4$Dept_name == '110-SEASOUnknownL/IMPULSE/PAPER GOODS',]
+test3<- Test_data_vf4[Test_data_vf4$Dept_name == '150-CHRISTMAS ORUnknownMENTS & TRIM',]
+test4<- Test_data_vf4[Test_data_vf4$Dept_name == '155-FESTIVE DECOR',]
+test5<- Test_data_vf4[Test_data_vf4$Dept_name == '180-HOME FRAGRANCES',]
+test6<- Test_data_vf4[Test_data_vf4$Dept_name == '200-OUTDOOR CUSHIONS',]
+test7<- Test_data_vf4[Test_data_vf4$Dept_name == '210-INDOOR CUSHIONS',]
+test8<- Test_data_vf4[Test_data_vf4$Dept_name == '220-CANDLE HOLDERS',]
+test9<- Test_data_vf4[Test_data_vf4$Dept_name == '230-GLIMMER AND LED',]
+test10<- Test_data_vf4[Test_data_vf4$Dept_name == '240-BEDDING',]
+test11<- Test_data_vf4[Test_data_vf4$Dept_name == '250-THROWS',]
+test12<- Test_data_vf4[Test_data_vf4$Dept_name == '270-LIGHTING',]
+test13<- Test_data_vf4[Test_data_vf4$Dept_name == '280-PILLOWS',]
+test14<- Test_data_vf4[Test_data_vf4$Dept_name == '285-OUTDOOR PILLOWS',]
+test15<- Test_data_vf4[Test_data_vf4$Dept_name == '330-MIRRORS',]
+test16<- Test_data_vf4[Test_data_vf4$Dept_name == '340-DECORATIVE ACCESSORIES',]
+test17<- Test_data_vf4[Test_data_vf4$Dept_name == '350-DECORATIVE VASES',]
+test18<- Test_data_vf4[Test_data_vf4$Dept_name == '360-WALL DECOR',]
+test19<- Test_data_vf4[Test_data_vf4$Dept_name == '370-FRAMES',]
+test20<- Test_data_vf4[Test_data_vf4$Dept_name == '410-KITCHEN & DINING ESSENTIALS',]
+test21<- Test_data_vf4[Test_data_vf4$Dept_name == '420-DINNERWARE',]
+test22<- Test_data_vf4[Test_data_vf4$Dept_name == '430-SERVEWARE',]
+test23<- Test_data_vf4[Test_data_vf4$Dept_name == '450-DRINKWARE/BARWARE',]
+test24<- Test_data_vf4[Test_data_vf4$Dept_name == '520-TABLE LINENS/KITCHEN TEXTILE',]
+test25<- Test_data_vf4[Test_data_vf4$Dept_name == '530-BATH TEXTILES',]
+test26<- Test_data_vf4[Test_data_vf4$Dept_name == '670-FLORAL DECOR',]
+test27<- Test_data_vf4[Test_data_vf4$Dept_name == '700-BASKETS',]
+test28<- Test_data_vf4[Test_data_vf4$Dept_name == '800-FLOOR COVERINGS',]
+test29<- Test_data_vf4[Test_data_vf4$Dept_name == '805-OUTDOOR FLOOR COVERINGS',]
+test30<- Test_data_vf4[Test_data_vf4$Dept_name == '810-DINING COLLECTIONS',]
+test31<- Test_data_vf4[Test_data_vf4$Dept_name == '815-UPHOLSTERED DINING SEATING',]
+test32<- Test_data_vf4[Test_data_vf4$Dept_name == '820-OCCASIOUnknownL',]
+test33<- Test_data_vf4[Test_data_vf4$Dept_name == '830-BEDROOM FURNITURE',]
+test34<- Test_data_vf4[Test_data_vf4$Dept_name == '840-OUTDOOR FURNITURE',]
+test35<- Test_data_vf4[Test_data_vf4$Dept_name == '850-ORGANIZATION & HOME OFFICE',]
+test36<- Test_data_vf4[Test_data_vf4$Dept_name == '860-OUTDOOR ACCSSORIES',]
+test37<- Test_data_vf4[Test_data_vf4$Dept_name == '870-BATH FURNITURE',]
+test38<- Test_data_vf4[Test_data_vf4$Dept_name == '880-CURTAINS',]
+test39<- Test_data_vf4[Test_data_vf4$Dept_name == '890-UPHOLSTERED SEATING',]
+test40<- Test_data_vf4[Test_data_vf4$Dept_name == '895-UnknownTURAL SEATING',]
+
+#Running the prediction on the test data
+p1 <- predict(rf_1, tes1)
+p2 <- predict(rf_2, test2)
+p3 <- predict(rf_3, test3)
+p4 <- predict(rf_4, test4)
+p5 <- predict(rf_5, test5)
+p6 <- predict(rf_6, test6)
+p7 <- predict(rf_7, test7)
+p8 <- predict(rf_8, test8)
+p9 <- predict(rf_9, test9)
+p10 <- predict(rf_10, test10)
+p11 <- predict(rf_11, test11)
+p12 <- predict(rf_12, test12)
+p13 <- predict(rf_13, test13)
+p14 <- predict(rf_14, test14)
+p15 <- predict(rf_15, test15)
+p16 <- predict(rf_16, test16)
+p17 <- predict(rf_17, test17)
+p18 <- predict(rf_18, test18)
+p19 <- predict(rf_19, test19)
+p20 <- predict(rf_20, test20)
+p21 <- predict(rf_21, test21)
+p22 <- predict(rf_22, test22)
+p23 <- predict(rf_23, test23)
+p24 <- predict(rf_24, test24)
+p25 <- predict(rf_25, test25)
+p26 <- predict(rf_26, test26)
+p27 <- predict(rf_27, test27)
+p28 <- predict(rf_28, test28)
+p29 <- predict(rf_29, test29)
+p30 <- predict(rf_30, test30)
+p31 <- predict(rf_31, test31)
+p32 <- predict(rf_32, test32)
+p33 <- predict(rf_33, test33)
+p34 <- predict(rf_34, test34)
+p35 <- predict(rf_35, test35)
+p36 <- predict(rf_36, test36)
+p37 <- predict(rf_37, test37)
+p38 <- predict(rf_38, test38)
+p39 <- predict(rf_39, test39)
+p40 <- predict(rf_40, test40)
+#RUnning the prediction on the training data
+p1 <- predict(rf_1, train1)
+p2 <- predict(rf_2, train2)
+p3 <- predict(rf_3, train3)
+p4 <- predict(rf_4, train4)
+p5 <- predict(rf_5, train5)
+p6 <- predict(rf_6, train6)
+p7 <- predict(rf_7, train7)
+p8 <- predict(rf_8, train8)
+p9 <- predict(rf_9, train9)
+p10 <- predict(rf_10, train10)
+p11 <- predict(rf_11, train11)
+p12 <- predict(rf_12, train12)
+p13 <- predict(rf_13, train13)
+p14 <- predict(rf_14, train14)
+p15 <- predict(rf_15, train15)
+p16 <- predict(rf_16, train16)
+p17 <- predict(rf_17, train17)
+p18 <- predict(rf_18, train18)
+p19 <- predict(rf_19, train19)
+p20 <- predict(rf_20, train20)
+p21 <- predict(rf_21, train21)
+p22 <- predict(rf_22, train22)
+p23 <- predict(rf_23, train23)
+p24 <- predict(rf_24, train24)
+p25 <- predict(rf_25, train25)
+p26 <- predict(rf_26, train26)
+p27 <- predict(rf_27, train27)
+p28 <- predict(rf_28, train28)
+p29 <- predict(rf_29, train29)
+p30 <- predict(rf_30, train30)
+p31 <- predict(rf_31, train31)
+p32 <- predict(rf_32, train32)
+p33 <- predict(rf_33, train33)
+p34 <- predict(rf_34, train34)
+p35 <- predict(rf_35, train35)
+p36 <- predict(rf_36, train36)
+p37 <- predict(rf_37, train37)
+p38 <- predict(rf_38, train38)
+p39 <- predict(rf_39, train39)
+p40 <- predict(rf_40, train40)
+
+
+#Combining results 
+result_train_1<- cbind(train1,p1)
+result_train_2<- cbind(train2,p2)
+result_train_3<- cbind(train3,p3)
+result_train_4<- cbind(train4,p4)
+result_train_5<- cbind(train5,p5)
+result_train_6<- cbind(train6,p6)
+result_train_7<- cbind(train7,p7)
+result_train_8<- cbind(train8,p8)
+result_train_9<- cbind(train9,p9)
+result_train_10<- cbind(train10,p10)
+result_train_11<- cbind(train11,p11)
+result_train_12<- cbind(train12,p12)
+result_train_13<- cbind(train13,p13)
+result_train_14<- cbind(train14,p14)
+result_train_15<- cbind(train15,p15)
+result_train_16<- cbind(train16,p16)
+result_train_17<- cbind(train17,p17)
+result_train_18<- cbind(train18,p18)
+result_train_19<- cbind(train19,p19)
+result_train_20<- cbind(train20,p20)
+result_train_21<- cbind(train21,p21)
+result_train_22<- cbind(train22,p22)
+result_train_23<- cbind(train23,p23)
+result_train_24<- cbind(train24,p24)
+result_train_25<- cbind(train25,p25)
+result_train_26<- cbind(train26,p26)
+result_train_27<- cbind(train27,p27)
+result_train_28<- cbind(train28,p28)
+result_train_29<- cbind(train29,p29)
+result_train_30<- cbind(train30,p30)
+result_train_31<- cbind(train31,p31)
+result_train_32<- cbind(train32,p32)
+result_train_33<- cbind(train33,p33)
+result_train_34<- cbind(train34,p34)
+result_train_35<- cbind(train35,p35)
+result_train_36<- cbind(train36,p36)
+result_train_37<- cbind(train37,p37)
+result_train_38<- cbind(train38,p38)
+result_train_39<- cbind(train39,p39)
+result_train_40<- cbind(train40,p40)
+
+#COmbining results 
+colnames(result_train_1)[15] <- "p"
+colnames(result_train_2)[15] <- "p"
+colnames(result_train_3)[15] <- "p"
+colnames(result_train_4)[15] <- "p"
+colnames(result_train_5)[15] <- "p"
+colnames(result_train_6)[15] <- "p"
+colnames(result_train_7)[15] <- "p"
+colnames(result_train_8)[15] <- "p"
+colnames(result_train_9)[15] <- "p"
+colnames(result_train_10)[15] <- "p"
+colnames(result_train_11)[15] <- "p"
+colnames(result_train_12)[15] <- "p"
+colnames(result_train_13)[15] <- "p"
+colnames(result_train_14)[15] <- "p"
+colnames(result_train_15)[15] <- "p"
+colnames(result_train_16)[15] <- "p"
+colnames(result_train_17)[15] <- "p"
+colnames(result_train_18)[15] <- "p"
+colnames(result_train_19)[15] <- "p"
+colnames(result_train_20)[15] <- "p"
+colnames(result_train_21)[15] <- "p"
+colnames(result_train_22)[15] <- "p"
+colnames(result_train_23)[15] <- "p"
+colnames(result_train_24)[15] <- "p"
+colnames(result_train_25)[15] <- "p"
+colnames(result_train_26)[15] <- "p"
+colnames(result_train_27)[15] <- "p"
+colnames(result_train_28)[15] <- "p"
+colnames(result_train_29)[15] <- "p"
+colnames(result_train_30)[15] <- "p"
+colnames(result_train_31)[15] <- "p"
+colnames(result_train_32)[15] <- "p"
+colnames(result_train_33)[15] <- "p"
+colnames(result_train_34)[15] <- "p"
+colnames(result_train_35)[15] <- "p"
+colnames(result_train_36)[15] <- "p"
+colnames(result_train_37)[15] <- "p"
+colnames(result_train_38)[15] <- "p"
+colnames(result_train_39)[15] <- "p"
+colnames(result_train_40)[15] <- "p"
+
+#Combining results 
+result_train<- rbind(
+  
+  result_train_2,
+  result_train_3,
+  result_train_4,
+  result_train_5,
+  result_train_6,
+  result_train_7,
+  result_train_8,
+  result_train_9,
+  result_train_10,
+  result_train_11,
+  result_train_12,
+  result_train_13,
+  result_train_14,
+  result_train_15,
+  result_train_16,
+  result_train_17,
+  result_train_18,
+  result_train_19,
+  result_train_20,
+  result_train_21,
+  result_train_22,
+  result_train_23,
+  result_train_24,
+  result_train_25,
+  result_train_26,
+  result_train_27,
+  result_train_28,
+  result_train_29,
+  result_train_30,
+  result_train_31,
+  result_train_32,
+  result_train_33,
+  result_train_34,
+  result_train_35,
+  result_train_36,
+  result_train_37,
+  result_train_38,
+  result_train_39,
+  result_train_40)
+
+#RMSE function for yield calculation
+RMSE <- function(x,y){
+  a <- sqrt(sum((log(x)-log(y))^2)/length(y))
+  return(a)
+}
+
+
+#RUnning the Random forest for onlines sales data.
+rf_1o <- randomForest(OnlineSalesQuantity ~ Week_Day_no +Day_of_Month+
+                        Dept_name+Code+vp+Feature_length+ProductType+
+                        BinBulk+ChannelStrategy+SKUPurchaseType, data=train1,
+                      ntree = 100,
+                      mtry = 4,
+                      importance = TRUE,
+                      proximity = TRUE)
+
+rf_2o <- randomForest(OnlineSalesQuantity ~ Week_Day_no +Day_of_Month+
+                        Dept_name+Code+vp+Feature_length+ProductType+
+                        BinBulk+ChannelStrategy+SKUPurchaseType, data=train2,
+                      ntree = 100,
+                      mtry = 4,
+                      importance = TRUE,
+                      proximity = TRUE)
+
+
+rf_3o <- randomForest(OnlineSalesQuantity ~ Week_Day_no +Day_of_Month+
+                        Dept_name+Code+vp+Feature_length+ProductType+
+                        BinBulk+ChannelStrategy+SKUPurchaseType, data=train3,
+                      ntree = 100,
+                      mtry = 4,
+                      importance = TRUE,
+                      proximity = TRUE)
+
+rf_4o <- randomForest(OnlineSalesQuantity ~ Week_Day_no +Day_of_Month+
+                        Dept_name+Code+vp+Feature_length+ProductType+
+                        BinBulk+ChannelStrategy+SKUPurchaseType, data=train4,
+                      ntree = 100,
+                      mtry = 4,
+                      importance = TRUE,
+                      proximity = TRUE)
+
+rf_5o <- randomForest(OnlineSalesQuantity ~ Week_Day_no +Day_of_Month+
+                        Dept_name+Code+vp+Feature_length+ProductType+
+                        BinBulk+ChannelStrategy+SKUPurchaseType, data=train5,
+                      ntree = 100,
+                      mtry = 4,
+                      importance = TRUE,
+                      proximity = TRUE)
+
+rf_6o <- randomForest(OnlineSalesQuantity ~ Week_Day_no +Day_of_Month+
+                        Dept_name+Code+vp+Feature_length+ProductType+
+                        BinBulk+ChannelStrategy+SKUPurchaseType, data=train6,
+                      ntree = 100,
+                      mtry = 4,
+                      importance = TRUE,
+                      proximity = TRUE)
+
+rf_7o <- randomForest(OnlineSalesQuantity ~ Week_Day_no +Day_of_Month+
+                        Dept_name+Code+vp+Feature_length+ProductType+
+                        BinBulk+ChannelStrategy+SKUPurchaseType, data=train7,
+                      ntree = 100,
+                      mtry = 4,
+                      importance = TRUE,
+                      proximity = TRUE)
+
+rf_8o <- randomForest(OnlineSalesQuantity ~ Week_Day_no +Day_of_Month+
+                        Dept_name+Code+vp+Feature_length+ProductType+
+                        BinBulk+ChannelStrategy+SKUPurchaseType, data=train8,
+                      ntree = 100,
+                      mtry = 4,
+                      importance = TRUE,
+                      proximity = TRUE)
+
+rf_9o <- randomForest(OnlineSalesQuantity ~ Week_Day_no +Day_of_Month+
+                        Dept_name+Code+vp+Feature_length+ProductType+
+                        BinBulk+ChannelStrategy+SKUPurchaseType, data=train9,
+                      ntree = 100,
+                      mtry = 4,
+                      importance = TRUE,
+                      proximity = TRUE)
+
+rf_10o <- randomForest(OnlineSalesQuantity ~ Week_Day_no +Day_of_Month+
+                         Dept_name+Code+vp+Feature_length+ProductType+
+                         BinBulk+ChannelStrategy+SKUPurchaseType, data=train10,
+                       ntree = 100,
+                       mtry = 4,
+                       importance = TRUE,
+                       proximity = TRUE)
+
+rf_11o <- randomForest(OnlineSalesQuantity ~., data=train11.imputed,
+                       ntree = 100,
+                       mtry = 4,
+                       importance = TRUE,
+                       proximity = TRUE
+)
+
+?rfImpute
+rf_12o <- randomForest(OnlineSalesQuantity ~ Week_Day_no +Day_of_Month+
+                         Dept_name+Code+vp+Feature_length+ProductType+
+                         BinBulk+ChannelStrategy+SKUPurchaseType, data=train12,
+                       ntree = 100,
+                       mtry = 4,
+                       importance = TRUE,
+                       proximity = TRUE)
+
+
+rf_13o <- randomForest(OnlineSalesQuantity ~., data=train13.imputed,
+                       ntree = 100,
+                       mtry = 4,
+                       importance = TRUE,
+                       proximity = TRUE)
+
+
+
+rf_14o <- randomForest(OnlineSalesQuantity ~ Week_Day_no +Day_of_Month+
+                         Dept_name+Code+vp+Feature_length+ProductType+
+                         BinBulk+ChannelStrategy+SKUPurchaseType, data=train14,
+                       ntree = 100,
+                       mtry = 4,
+                       importance = TRUE,
+                       proximity = TRUE)
+
+rf_15o <- randomForest(OnlineSalesQuantity ~ Week_Day_no +Day_of_Month+
+                         Dept_name+Code+vp+Feature_length+ProductType+
+                         BinBulk+ChannelStrategy+SKUPurchaseType, data=train15,
+                       ntree = 100,
+                       mtry = 4,
+                       importance = TRUE,
+                       proximity = TRUE)
+
+rf_16o <- randomForest(OnlineSalesQuantity ~., data=train16.imputed,
+                       ntree = 100,
+                       mtry = 4,
+                       importance = TRUE,
+                       proximity = TRUE)
+
+
+rf_17o <- randomForest(OnlineSalesQuantity ~., data=train17.imputed,
+                       ntree = 100,
+                       mtry = 4,
+                       importance = TRUE,
+                       proximity = TRUE)
+
+rf_18o <- randomForest(OnlineSalesQuantity ~., data=train18.imputed,
+                       ntree = 100,
+                       mtry = 4,
+                       importance = TRUE,
+                       proximity = TRUE)
+
+rf_19o <- randomForest(OnlineSalesQuantity ~ Week_Day_no +Day_of_Month+
+                         Dept_name+Code+vp+Feature_length+ProductType+
+                         BinBulk+ChannelStrategy+SKUPurchaseType, data=train19,
+                       ntree = 100,
+                       mtry = 4,
+                       importance = TRUE,
+                       proximity = TRUE)
+
+rf_20o <- randomForest(OnlineSalesQuantity ~., data=train20.imputed,
+                       ntree = 100,
+                       mtry = 4,
+                       importance = TRUE,
+                       proximity = TRUE)
+
+rf_21o <- randomForest(OnlineSalesQuantity ~ Week_Day_no +Day_of_Month+
+                         Dept_name+Code+vp+Feature_length+ProductType+
+                         BinBulk+ChannelStrategy+SKUPurchaseType, data=train21,
+                       ntree = 100,
+                       mtry = 4,
+                       importance = TRUE,
+                       proximity = TRUE)
+
+rf_22o <- randomForest(OnlineSalesQuantity ~ Week_Day_no +Day_of_Month+
+                         Dept_name+Code+vp+Feature_length+ProductType+
+                         BinBulk+ChannelStrategy+SKUPurchaseType, data=train22,
+                       ntree = 100,
+                       mtry = 4,
+                       importance = TRUE,
+                       proximity = TRUE)
+
+rf_23o <- randomForest(OnlineSalesQuantity ~ Week_Day_no +Day_of_Month+
+                         Dept_name+Code+vp+Feature_length+ProductType+
+                         BinBulk+ChannelStrategy+SKUPurchaseType, data=train23,
+                       ntree = 100,
+                       mtry = 4,
+                       importance = TRUE,
+                       proximity = TRUE)
+
+rf_24o <- randomForest(OnlineSalesQuantity ~ Week_Day_no +Day_of_Month+
+                         Dept_name+Code+vp+Feature_length+ProductType+
+                         BinBulk+ChannelStrategy+SKUPurchaseType, data=train24,
+                       ntree = 100,
+                       mtry = 4,
+                       importance = TRUE,
+                       proximity = TRUE)
+
+rf_25o <- randomForest(OnlineSalesQuantity ~ Week_Day_no +Day_of_Month+
+                         Dept_name+Code+vp+Feature_length+ProductType+
+                         BinBulk+ChannelStrategy+SKUPurchaseType, data=train25,
+                       ntree = 100,
+                       mtry = 4,
+                       importance = TRUE,
+                       proximity = TRUE)
+
+rf_26o <- randomForest(OnlineSalesQuantity ~ Week_Day_no +Day_of_Month+
+                         Dept_name+Code+vp+Feature_length+ProductType+
+                         BinBulk+ChannelStrategy+SKUPurchaseType, data=train26,
+                       ntree = 100,
+                       mtry = 4,
+                       importance = TRUE,
+                       proximity = TRUE)
+
+rf_27o <- randomForest(OnlineSalesQuantity ~., data=train27.imputed,
+                       ntree = 100,
+                       mtry = 4,
+                       importance = TRUE,
+                       proximity = TRUE)
+
+rf_28o <- randomForest(OnlineSalesQuantity ~ Week_Day_no +Day_of_Month+
+                         Dept_name+Code+vp+Feature_length+ProductType+
+                         BinBulk+ChannelStrategy+SKUPurchaseType, data=train28,
+                       ntree = 100,
+                       mtry = 4,
+                       importance = TRUE,
+                       proximity = TRUE)
+
+rf_29o <- randomForest(OnlineSalesQuantity ~ Week_Day_no +Day_of_Month+
+                         Dept_name+Code+vp+Feature_length+ProductType+
+                         BinBulk+ChannelStrategy+SKUPurchaseType, data=train29,
+                       ntree = 100,
+                       mtry = 4,
+                       importance = TRUE,
+                       proximity = TRUE)
+
+rf_30o <- randomForest(OnlineSalesQuantity ~., data=train30.imputed,
+                       ntree = 100,
+                       mtry = 4,
+                       importance = TRUE,
+                       proximity = TRUE)
+
+rf_31o <- randomForest(OnlineSalesQuantity ~ Week_Day_no +Day_of_Month+
+                         Dept_name+Code+vp+Feature_length+ProductType+
+                         BinBulk+ChannelStrategy+SKUPurchaseType, data=train31,
+                       ntree = 100,
+                       mtry = 4,
+                       importance = TRUE,
+                       proximity = TRUE)
+
+rf_32o <- randomForest(OnlineSalesQuantity ~ Week_Day_no +Day_of_Month+
+                         Dept_name+Code+vp+Feature_length+ProductType+
+                         BinBulk+ChannelStrategy+SKUPurchaseType, data=train32,
+                       ntree = 100,
+                       mtry = 4,
+                       importance = TRUE,
+                       proximity = TRUE)
+
+
+rf_33o <- randomForest(OnlineSalesQuantity ~., data=train33.imputed,
+                       ntree = 100,
+                       mtry = 4,
+                       importance = TRUE,
+                       proximity = TRUE)
+
+rf_34o <- randomForest(OnlineSalesQuantity ~ Week_Day_no +Day_of_Month+
+                         Dept_name+Code+vp+Feature_length+ProductType+
+                         BinBulk+ChannelStrategy+SKUPurchaseType, data=train34,
+                       ntree = 100,
+                       mtry = 4,
+                       importance = TRUE,
+                       proximity = TRUE)
+
+rf_35o <- randomForest(OnlineSalesQuantity ~., data=train35.imputed,
+                       ntree = 100,
+                       mtry = 4,
+                       importance = TRUE,
+                       proximity = TRUE)
+
+rf_36o <- randomForest(OnlineSalesQuantity ~ Week_Day_no +Day_of_Month+
+                         Dept_name+Code+vp+Feature_length+ProductType+
+                         BinBulk+ChannelStrategy+SKUPurchaseType, data=train36,
+                       ntree = 100,
+                       mtry = 4,
+                       importance = TRUE,
+                       proximity = TRUE)
+
+rf_37o <- randomForest(OnlineSalesQuantity ~., data=train37.imputed,
+                       ntree = 100,
+                       mtry = 4,
+                       importance = TRUE,
+                       proximity = TRUE)
+
+rf_38o <- randomForest(OnlineSalesQuantity ~ Week_Day_no +Day_of_Month+
+                         Dept_name+Code+vp+Feature_length+ProductType+
+                         BinBulk+ChannelStrategy+SKUPurchaseType, data=train38,
+                       ntree = 100,
+                       mtry = 4,
+                       importance = TRUE,
+                       proximity = TRUE)
+
+
+rf_39o <- randomForest(OnlineSalesQuantity ~., data=train39.imputed,
+                       ntree = 100,
+                       mtry = 4,
+                       importance = TRUE,
+                       proximity = TRUE)
+
+rf_40o <- randomForest(OnlineSalesQuantity ~ Week_Day_no +Day_of_Month+
+                         Dept_name+Code+vp+Feature_length+ProductType+
+                         BinBulk+ChannelStrategy+SKUPurchaseType, data=train40,
+                       ntree = 100,
+                       mtry = 4,
+                       importance = TRUE,
+                       proximity = TRUE)
+
+
